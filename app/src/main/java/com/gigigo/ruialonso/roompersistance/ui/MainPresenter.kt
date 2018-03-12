@@ -78,7 +78,9 @@ class MainPresenter(private val context: Context, private var lifecycleOwner: Li
   }
 
   fun fetchProjects() {
-    projectsObservable = database.projectDao().findAllProjects()
+    //findAllProjects()
+    //findAllProjectsInRepository("github")
+    projectsObservable = database.projectDao().findAllProjectsInRepositoryDomain("%github%")
     projectsObservable.observe(lifecycleOwner,
         Observer { printProjects(it) })
 

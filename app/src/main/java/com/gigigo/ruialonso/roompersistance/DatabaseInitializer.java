@@ -20,10 +20,11 @@ public class DatabaseInitializer {
     return user;
   }
 
-  private static Project addProject(final AppDatabase db, String name,  Date creationDate,
+  private static Project addProject(final AppDatabase db, String name, int repoId, Date creationDate,
       Technology technology) {
     Project project = new Project();
     project.name = name;
+    project.repoId = repoId;
     project.creationDate = creationDate;
     project.technology = technology;
 
@@ -61,15 +62,6 @@ public class DatabaseInitializer {
 
     Date date = getTodayPlusDays(0);
 
-    Project woah = addProject(db, "WOAH", date, Technology.Android);
-    Project vips = addProject(db, "Vips", date, Technology.iOS);
-    Project destapp = addProject(db, "Destapp", date, Technology.WindowsPhone);
-    Project mcdonald = addProject(db, "McDonalds", date, Technology.Android);
-    Project orchextra = addProject(db, "Orchextra", date, Technology.iOS);
-    Project nubico = addProject(db, "Nubico", date, Technology.Blackberry10);
-    Project ferring = addProject(db, "Ferring", date, Technology.Android);
-    Project forme = addProject(db, "Forme", date, Technology.Android);
-
     Repository ruiGithub = addRepository(db, "Rui Github", "github.com", rui.id, date);
     Repository ruiBitbucket = addRepository(db, "Rui Bitbucket", "bitbucket.org", rui.id, date);
 
@@ -85,6 +77,16 @@ public class DatabaseInitializer {
         addRepository(db, "Santi Bitbucket", "bitbucket.org", santi.id, date);
 
     Repository alexBitbucket = addRepository(db, "Alex Bitbucket", "bitbucket.org", alex.id, date);
+
+
+    Project woah = addProject(db, "WOAH", 1, date, Technology.Android);
+    Project vips = addProject(db, "Vips", 3, date, Technology.iOS);
+    Project destapp = addProject(db, "Destapp", 2, date, Technology.WindowsPhone);
+    Project mcdonald = addProject(db, "McDonalds", 2, date, Technology.Android);
+    Project orchextra = addProject(db, "Orchextra", 1, date, Technology.iOS);
+    Project nubico = addProject(db, "Nubico", 4, date, Technology.Blackberry10);
+    Project ferring = addProject(db, "Ferring", 5, date, Technology.Android);
+    Project forme = addProject(db, "Forme", 6, date, Technology.Android);
   }
 
   private static Date getTodayPlusDays(int daysAgo) {

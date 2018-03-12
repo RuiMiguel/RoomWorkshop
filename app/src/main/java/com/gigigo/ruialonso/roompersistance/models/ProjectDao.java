@@ -13,6 +13,9 @@ import java.util.List;
 
   @Query("SELECT * FROM Project") LiveData<List<Project>> findAllProjects();
 
+  @Query("SELECT Project.* FROM Project INNER JOIN Repository ON Project.repo_id = Repository.id WHERE Repository.url LIKE :repositoryUrl")
+  LiveData<List<Project>> findAllProjectsInRepositoryDomain(String repositoryUrl);
+
   @Insert(onConflict = OnConflictStrategy.REPLACE) void insertProject(Project project);
 
   @Query("DELETE FROM Project") void deleteAll();
