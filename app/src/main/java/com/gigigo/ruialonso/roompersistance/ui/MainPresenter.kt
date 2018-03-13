@@ -46,7 +46,7 @@ class MainPresenter(private val context: Context, private var lifecycleOwner: Li
     var sb = StringBuilder()
     users?.map {
       sb.append(String.format(
-          "(%s) %s: %d\n", it.id, it.name, it.email))
+          "(%s) %s: %s\n", it.id, it.name, it.email))
     }
 
 

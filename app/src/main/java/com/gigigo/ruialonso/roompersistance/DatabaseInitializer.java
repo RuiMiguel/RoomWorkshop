@@ -12,9 +12,9 @@ public class DatabaseInitializer {
 
   private static UserEntity addUser(final AppDatabase db, int id, String name, String email) {
     UserEntity user = new UserEntity();
-    user.id = id;
-    user.name = name;
-    user.email = email;
+    user.setId(id);
+    user.setName(name);
+    user.setEmail(email);
     db.userDao().insertUser(user);
     Log.d("DATABASE", "inserted user " + name);
     return user;
@@ -23,10 +23,10 @@ public class DatabaseInitializer {
   private static ProjectEntity addProject(final AppDatabase db, String name, int repoId, Date creationDate,
       Technology technology) {
     ProjectEntity project = new ProjectEntity();
-    project.name = name;
-    project.repoId = repoId;
-    project.creationDate = creationDate;
-    project.technology = technology;
+    project.setName(name);
+    project.setRepoId(repoId);
+    project.setCreationDate(creationDate);
+    project.setTechnology(technology);
 
     db.projectDao().insertProject(project);
     Log.d("DATABASE", "inserted project " + name);
@@ -36,10 +36,10 @@ public class DatabaseInitializer {
   private static RepositoryEntity addRepository(final AppDatabase db, String name, String url, int userId,
       Date creationDate) {
     RepositoryEntity repository = new RepositoryEntity();
-    repository.name = name;
-    repository.url = url;
-    repository.userId = userId;
-    repository.creationDate = creationDate;
+    repository.setName(name);
+    repository.setUrl(url);
+    repository.setUserId(userId);
+    repository.setCreationDate(creationDate);
 
     db.repositoryDao().insertRepository(repository);
     Log.d("DATABASE", "inserted repo " + name);
@@ -62,15 +62,20 @@ public class DatabaseInitializer {
 
     Date date = getTodayPlusDays(0);
 
-    RepositoryEntity ruiGithub = addRepository(db, "Rui Github", "github.com", rui.id, date);
-    RepositoryEntity ruiBitbucket = addRepository(db, "Rui Bitbucket", "bitbucket.org", rui.id, date);
-    RepositoryEntity manuGithub = addRepository(db, "Manu Github", "github.com", manu.id, date);
-    RepositoryEntity manuBitbucket = addRepository(db, "Manu Bitbucket", "bitbucket.org", manu.id, date);
-    RepositoryEntity beniGithub = addRepository(db, "Beni Github", "github.com", beni.id, date);
-    RepositoryEntity beniBitbucket = addRepository(db, "Beni Bitbucket", "bitbucket.org", beni.id, date);
-    RepositoryEntity albertoGithub = addRepository(db, "Alberto Github", "github.com", alberto.id, date);
-    RepositoryEntity santiBitbucket = addRepository(db, "Santi Bitbucket", "bitbucket.org", santi.id, date);
-    RepositoryEntity alexBitbucket = addRepository(db, "Alex Bitbucket", "bitbucket.org", alex.id, date);
+    RepositoryEntity ruiGithub = addRepository(db, "Rui Github", "github.com", rui.getId(), date);
+    RepositoryEntity ruiBitbucket = addRepository(db, "Rui Bitbucket", "bitbucket.org", rui.getId(), date);
+    RepositoryEntity manuGithub = addRepository(db, "Manu Github", "github.com", manu.getId(), date);
+    RepositoryEntity manuBitbucket = addRepository(db, "Manu Bitbucket", "bitbucket.org",
+        manu.getId(), date);
+    RepositoryEntity beniGithub = addRepository(db, "Beni Github", "github.com", beni.getId(), date);
+    RepositoryEntity beniBitbucket = addRepository(db, "Beni Bitbucket", "bitbucket.org",
+        beni.getId(), date);
+    RepositoryEntity albertoGithub = addRepository(db, "Alberto Github", "github.com",
+        alberto.getId(), date);
+    RepositoryEntity santiBitbucket = addRepository(db, "Santi Bitbucket", "bitbucket.org",
+        santi.getId(), date);
+    RepositoryEntity alexBitbucket = addRepository(db, "Alex Bitbucket", "bitbucket.org",
+        alex.getId(), date);
 
     ProjectEntity woah = addProject(db, "WOAH", 1, date, Technology.Android);
     ProjectEntity vips = addProject(db, "Vips", 3, date, Technology.iOS);
