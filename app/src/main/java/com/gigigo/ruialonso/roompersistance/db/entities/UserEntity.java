@@ -1,10 +1,10 @@
-package com.gigigo.ruialonso.roompersistance.models;
+package com.gigigo.ruialonso.roompersistance.db.entities;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity()
-public class User {
+@Entity(tableName = "User")
+public class UserEntity {
   @PrimaryKey public int id;
 
   public String name;

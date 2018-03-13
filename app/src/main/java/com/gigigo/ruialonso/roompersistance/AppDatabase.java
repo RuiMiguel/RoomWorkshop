@@ -9,16 +9,16 @@ import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import com.gigigo.ruialonso.roompersistance.models.Project;
-import com.gigigo.ruialonso.roompersistance.models.ProjectDao;
-import com.gigigo.ruialonso.roompersistance.models.Repository;
-import com.gigigo.ruialonso.roompersistance.models.RepositoryDao;
-import com.gigigo.ruialonso.roompersistance.models.User;
-import com.gigigo.ruialonso.roompersistance.models.UserDao;
+import com.gigigo.ruialonso.roompersistance.db.dao.ProjectDao;
+import com.gigigo.ruialonso.roompersistance.db.dao.RepositoryDao;
+import com.gigigo.ruialonso.roompersistance.db.dao.UserDao;
+import com.gigigo.ruialonso.roompersistance.db.entities.ProjectEntity;
+import com.gigigo.ruialonso.roompersistance.db.entities.RepositoryEntity;
+import com.gigigo.ruialonso.roompersistance.db.entities.UserEntity;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
 
-@Database(entities = { User.class, Project.class, Repository.class }, version = 1)
+@Database(entities = { UserEntity.class, ProjectEntity.class, RepositoryEntity.class }, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
   public static final String DATABASE_NAME = "basic-sample-db";
@@ -66,17 +66,16 @@ public abstract class AppDatabase extends RoomDatabase {
               }
             });
           }
-        })
-        .build();
+        }).build();
   }
 
   static final Migration MIGRATION_1_2 = new Migration(1, 2) {
-    @Override
-    public void migrate(SupportSQLiteDatabase database) {
+    @Override public void migrate(SupportSQLiteDatabase database) {
       database.execSQL("PRAGMA foreign_keys=ON;");
-      database.execSQL("ALTER TABLE Repository ADD COLUMN user_id INTEGER NOT NULL DEFAULT 0 FOREIGN KEY(user_id) REFERENCES User(id) ON DELETE CASCADE;");
-      //database.execSQL("ALTER TABLE Repository ADD CONSTRAINT index_Repository_user_id FOREIGN KEY(user_id) REFERENCES User(id) ON DELETE CASCADE;");
-      database.execSQL("CREATE INDEX index_Repository_user_id ON Repository(user_id);");
+      database.execSQL(
+          "ALTER TABLE RepositoryEntity ADD COLUMN user_id INTEGER NOT NULL DEFAULT 0 FOREIGN KEY(user_id) REFERENCES UserEntity(id) ON DELETE CASCADE;");
+      //database.execSQL("ALTER TABLE RepositoryEntity ADD CONSTRAINT index_Repository_user_id FOREIGN KEY(user_id) REFERENCES UserEntity(id) ON DELETE CASCADE;");
+      database.execSQL("CREATE INDEX index_Repository_user_id ON RepositoryEntity(user_id);");
     }
   };
 
