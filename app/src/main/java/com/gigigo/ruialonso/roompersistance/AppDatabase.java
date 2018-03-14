@@ -79,11 +79,32 @@ public abstract class AppDatabase extends RoomDatabase {
 
   static final Migration MIGRATION_1_2 = new Migration(1, 2) {
     @Override public void migrate(SupportSQLiteDatabase database) {
-      database.execSQL("PRAGMA foreign_keys=ON;");
+      /*
+      // SQLite supports a limited operations for ALTER.
+      // Changing the type of a column is not directly supported, so this is what we need
+      // to do:
+
+      // Create the new table
       database.execSQL(
-          "ALTER TABLE Repository ADD COLUMN user_id INTEGER NOT NULL DEFAULT 0 FOREIGN KEY(user_id) REFERENCES User(id) ON DELETE CASCADE;");
-      //database.execSQL("ALTER TABLE Repository ADD CONSTRAINT index_Repository_user_id FOREIGN KEY(user_id) REFERENCES User(id) ON DELETE CASCADE;");
-      database.execSQL("CREATE INDEX index_Repository_user_id ON Repository(user_id);");
+          "CREATE TABLE Repository_new (id INTEGER NOT NULL,"
+              + "name TEXT,"
+              + "url TEXT,"
+              + "user_id INTEGER,"
+              + "creationDate INTEGER,"
+              + "PRIMARY KEY(id),"
+              + "FOREIGN KEY(user_id) REFERENCES User(id) ON DELETE CASCADE)");
+
+      // Copy the data
+      database.execSQL("INSERT INTO Repository_new (id, name, url, user_id, creationDate) "
+          + "SELECT id, name, url, user_id, creationDate "
+          + "FROM Repository");
+
+      // Remove the old table
+      database.execSQL("DROP TABLE Repository");
+
+      // Change the table name to the correct one
+      database.execSQL("ALTER TABLE Repository_new RENAME TO Repository");
+      */
     }
   };
 
