@@ -10,6 +10,9 @@ class MainActivity : AppCompatActivity() {
   private val usersText: TextView by lazy { findViewById<TextView>(R.id.users_text) }
   private val projectsText: TextView by lazy { findViewById<TextView>(R.id.projects_text) }
   private val repositoriesText: TextView by lazy { findViewById<TextView>(R.id.repositories_text) }
+  private val userRepositoriesText: TextView by lazy { findViewById<TextView>(R.id.user_repositories_text) }
+  private val projectsUsersText: TextView by lazy { findViewById<TextView>(R.id.projects_users_text) }
+  private val repositoryProjectsText: TextView by lazy { findViewById<TextView>(R.id.repository_projects_text) }
 
   private val clearButton: Button by lazy { findViewById<Button>(R.id.clear_button) }
   private val fillButton: Button by lazy { findViewById<Button>(R.id.fill_button) }
@@ -20,6 +23,12 @@ class MainActivity : AppCompatActivity() {
   private val stopFetchProjectsButton: Button by lazy { findViewById<Button>(R.id.stop_fetch_projects_button) }
   private val fetchRepositoriesButton: Button by lazy { findViewById<Button>(R.id.fetch_repositories_button) }
   private val stopFetchRepositoriesButton: Button by lazy { findViewById<Button>(R.id.stop_fetch_repositories_button) }
+  private val fetchUserRepositoriesButton: Button by lazy { findViewById<Button>(R.id.fetch_user_repositories_button) }
+  private val stopFetchUserRepositoriesButton: Button by lazy { findViewById<Button>(R.id.stop_fetch_user_repositories_button) }
+  private val fetchProjectsUsersButton: Button by lazy { findViewById<Button>(R.id.fetch_projects_users_button) }
+  private val stopFetchProjectsUsersButton: Button by lazy { findViewById<Button>(R.id.stop_fetch_projects_users_button) }
+  private val fetchRepositoryProjectsButton: Button by lazy { findViewById<Button>(R.id.fetch_repository_projects_button) }
+  private val stopFetchRepositoryProjectsButton: Button by lazy { findViewById<Button>(R.id.stop_fetch_repository_projects_button) }
 
   private val presenter: MainPresenter by lazy {
     MainPresenter(applicationContext, this)
@@ -44,6 +53,15 @@ class MainActivity : AppCompatActivity() {
 
     fetchRepositoriesButton.setOnClickListener { presenter.fetchRepositories() }
     stopFetchRepositoriesButton.setOnClickListener { presenter.stopFetchRepositories() }
+
+    fetchUserRepositoriesButton.setOnClickListener { presenter.fetchUserRepositories() }
+    stopFetchUserRepositoriesButton.setOnClickListener { presenter.stopFetchUserRepositories() }
+
+    fetchProjectsUsersButton.setOnClickListener { presenter.fetchProjectsUsers() }
+    stopFetchProjectsUsersButton.setOnClickListener { presenter.stopFetchProjectsUsers() }
+
+    fetchRepositoryProjectsButton.setOnClickListener { presenter.fetchRepositoryProjects() }
+    stopFetchRepositoryProjectsButton.setOnClickListener { presenter.stopFetchRepositoryProjects() }
   }
 
   fun fillUser(users: String) {
@@ -55,5 +73,16 @@ class MainActivity : AppCompatActivity() {
   }
   fun fillRepositories(repositories: String) {
     repositoriesText.text = repositories
+  }
+
+  fun fillUserRepositories(userRepositories: String) {
+    userRepositoriesText.text = userRepositories
+  }
+
+  fun fillProjectsUsers(projectsUsers: String) {
+    projectsUsersText.text = projectsUsers
+  }
+  fun fillRepositoryProjects(repositoryProjects: String) {
+    repositoryProjectsText.text = repositoryProjects
   }
 }

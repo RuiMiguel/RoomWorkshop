@@ -1,17 +1,19 @@
 package com.gigigo.ruialonso.roompersistance;
 
 import android.util.Log;
-import com.gigigo.ruialonso.roompersistance.db.entities.ProjectEntity;
-import com.gigigo.ruialonso.roompersistance.db.entities.RepositoryEntity;
-import com.gigigo.ruialonso.roompersistance.models.Technology;
-import com.gigigo.ruialonso.roompersistance.db.entities.UserEntity;
+import com.gigigo.ruialonso.roompersistance.db.entities.Project;
+import com.gigigo.ruialonso.roompersistance.db.entities.ProjectsUsersJoin;
+import com.gigigo.ruialonso.roompersistance.db.entities.Repository;
+import com.gigigo.ruialonso.roompersistance.db.Technology;
+import com.gigigo.ruialonso.roompersistance.db.entities.RepositoryProjectJoin;
+import com.gigigo.ruialonso.roompersistance.db.entities.User;
 import java.util.Calendar;
 import java.util.Date;
 
 public class DatabaseInitializer {
 
-  private static UserEntity addUser(final AppDatabase db, int id, String name, String email) {
-    UserEntity user = new UserEntity();
+  private static User addUser(final AppDatabase db, int id, String name, String email) {
+    User user = new User();
     user.setId(id);
     user.setName(name);
     user.setEmail(email);
@@ -20,11 +22,10 @@ public class DatabaseInitializer {
     return user;
   }
 
-  private static ProjectEntity addProject(final AppDatabase db, String name, int repoId, Date creationDate,
-      Technology technology) {
-    ProjectEntity project = new ProjectEntity();
+  private static Project addProject(final AppDatabase db, int id, String name, Date creationDate, Technology technology) {
+    Project project = new Project();
+    project.setId(id);
     project.setName(name);
-    project.setRepoId(repoId);
     project.setCreationDate(creationDate);
     project.setTechnology(technology);
 
@@ -33,9 +34,10 @@ public class DatabaseInitializer {
     return project;
   }
 
-  private static RepositoryEntity addRepository(final AppDatabase db, String name, String url, int userId,
+  private static Repository addRepository(final AppDatabase db, int id, String name, String url, int userId,
       Date creationDate) {
-    RepositoryEntity repository = new RepositoryEntity();
+    Repository repository = new Repository();
+    repository.setId(id);
     repository.setName(name);
     repository.setUrl(url);
     repository.setUserId(userId);
@@ -46,48 +48,86 @@ public class DatabaseInitializer {
     return repository;
   }
 
+  private static RepositoryProjectJoin addRepoProject(final AppDatabase db, int repoId, int projectId) {
+    RepositoryProjectJoin repositoryProjectJoin = new RepositoryProjectJoin();
+    repositoryProjectJoin.setRepoId(repoId);
+    repositoryProjectJoin.setProjectId(projectId);
+
+    db.repositoryProjectJoinDao().insertRepositoryProject(repositoryProjectJoin);
+    Log.d("DATABASE", "inserted repoProject " + repoId + "-"+ projectId);
+    return repositoryProjectJoin;
+  }
+
+  private static ProjectsUsersJoin addUserProject(final AppDatabase db, int userId, int projectId) {
+    ProjectsUsersJoin projectsUsersJoin = new ProjectsUsersJoin();
+    projectsUsersJoin.setUserId(userId);
+    projectsUsersJoin.setProjectId(projectId);
+
+    db.projectsUsersJoinDao().insertProjectsUsersJoin(projectsUsersJoin);
+    Log.d("DATABASE", "inserted userProject " + userId + "-"+ projectId);
+    return projectsUsersJoin;
+  }
+
   public static void clearData(final AppDatabase db) {
     db.userDao().deleteAll();
+    db.repositoryProjectJoinDao().deleteAll();
     db.projectDao().deleteAll();
     db.repositoryDao().deleteAll();
   }
 
   public static void populateData(AppDatabase db) {
-    UserEntity rui = addUser(db, 1, "Rui", "rui@gigigo.com");
-    UserEntity manu = addUser(db, 2, "Manu", "manu@gigigo.com");
-    UserEntity beni = addUser(db, 3, "Beni", "beni@gigigo.com");
-    UserEntity alberto = addUser(db, 4, "Alberto", "alberto@gigigo.com");
-    UserEntity santi = addUser(db, 5, "Santi", "santi@gigigo.com");
-    UserEntity alex = addUser(db, 6, "Alex", "alex@gigigo.com");
+    User rui = addUser(db, 1, "Rui", "rui@gigigo.com");
+    User manu = addUser(db, 2, "Manu", "manu@gigigo.com");
+    User beni = addUser(db, 3, "Beni", "beni@gigigo.com");
+    User alberto = addUser(db, 4, "Alberto", "alberto@gigigo.com");
+    User santi = addUser(db, 5, "Santi", "santi@gigigo.com");
+    User alex = addUser(db, 6, "Alex", "alex@gigigo.com");
+    User claudia = addUser(db, 7, "Claudia", "claudia@gigigo.com");
 
     Date date = getTodayPlusDays(0);
 
-    RepositoryEntity ruiGithub = addRepository(db, "Rui Github", "github.com", rui.getId(), date);
-    RepositoryEntity ruiBitbucket = addRepository(db, "Rui Bitbucket", "bitbucket.org", rui.getId(), date);
-    RepositoryEntity manuGithub = addRepository(db, "Manu Github", "github.com", manu.getId(), date);
-    RepositoryEntity manuBitbucket = addRepository(db, "Manu Bitbucket", "bitbucket.org",
-        manu.getId(), date);
-    RepositoryEntity beniGithub = addRepository(db, "Beni Github", "github.com", beni.getId(), date);
-    RepositoryEntity beniBitbucket = addRepository(db, "Beni Bitbucket", "bitbucket.org",
-        beni.getId(), date);
-    RepositoryEntity albertoGithub = addRepository(db, "Alberto Github", "github.com",
-        alberto.getId(), date);
-    RepositoryEntity santiBitbucket = addRepository(db, "Santi Bitbucket", "bitbucket.org",
-        santi.getId(), date);
-    RepositoryEntity alexBitbucket = addRepository(db, "Alex Bitbucket", "bitbucket.org",
-        alex.getId(), date);
+    Repository ruiGithub = addRepository(db, 1, "Rui Github", "github.com", rui.getId(), date);
+    Repository ruiBitbucket = addRepository(db, 2, "Rui Bitbucket", "bitbucket.org", rui.getId(), date);
+    Repository manuGithub = addRepository(db, 3, "Manu Github", "github.com", manu.getId(), date);
+    Repository manuBitbucket = addRepository(db, 4, "Manu Bitbucket", "bitbucket.org", manu.getId(), date);
+    Repository beniGithub = addRepository(db, 5, "Beni Github", "github.com", beni.getId(), date);
+    Repository beniBitbucket = addRepository(db, 6, "Beni Bitbucket", "bitbucket.org", beni.getId(), date);
+    Repository albertoGithub = addRepository(db, 7, "Alberto Github", "github.com", alberto.getId(), date);
+    Repository santiBitbucket = addRepository(db, 8, "Santi Bitbucket", "bitbucket.org", santi.getId(), date);
+    Repository alexBitbucket = addRepository(db, 9, "Alex Bitbucket", "bitbucket.org", alex.getId(), date);
 
-    ProjectEntity woah = addProject(db, "WOAH", 1, date, Technology.Android);
-    ProjectEntity vips = addProject(db, "Vips", 3, date, Technology.iOS);
-    ProjectEntity destapp = addProject(db, "Destapp", 2, date, Technology.WindowsPhone);
-    ProjectEntity mcdonald = addProject(db, "McDonalds", 2, date, Technology.Android);
-    ProjectEntity orchextra = addProject(db, "Orchextra", 1, date, Technology.iOS);
-    ProjectEntity nubico = addProject(db, "Nubico", 4, date, Technology.Blackberry10);
-    ProjectEntity ferring = addProject(db, "Ferring", 5, date, Technology.Android);
-    ProjectEntity forme = addProject(db, "Forme", 6, date, Technology.Android);
+    Project woah = addProject(db, 1, "WOAH", date, Technology.Android);
+    Project vips = addProject(db, 2, "Vips", date, Technology.iOS);
+    Project destapp = addProject(db, 3, "Destapp", date, Technology.WindowsPhone);
+    Project mcdonald = addProject(db, 4, "McDonalds", date, Technology.Android);
+    Project orchextra = addProject(db, 5, "Orchextra", date, Technology.iOS);
+    Project nubico = addProject(db, 6, "Nubico", date, Technology.Blackberry10);
+    Project ferring = addProject(db, 7, "Ferring", date, Technology.Android);
+    Project forme = addProject(db, 8, "Forme", date, Technology.Android);
+    Project smileworld = addProject(db, 9, "Smileworld", date, Technology.Android);
+
+    addRepoProject(db, ruiGithub.getId(), woah.getId());
+    addRepoProject(db, santiBitbucket.getId(), vips.getId());
+    addRepoProject(db, albertoGithub.getId(), destapp.getId());
+    addRepoProject(db, beniBitbucket.getId(), mcdonald.getId());
+    addRepoProject(db, beniGithub.getId(), ferring.getId());
+    addRepoProject(db, alexBitbucket.getId(), forme.getId());
+    addRepoProject(db, manuGithub.getId(), orchextra.getId());
+    addRepoProject(db, ruiGithub.getId(), orchextra.getId());
+    addRepoProject(db, ruiGithub.getId(), nubico.getId());
+
+    addUserProject(db, rui.getId(), woah.getId());
+    addUserProject(db, rui.getId(), nubico.getId());
+    addUserProject(db, rui.getId(), orchextra.getId());
+    addUserProject(db, manu.getId(), orchextra.getId());
+    addUserProject(db, beni.getId(), mcdonald.getId());
+    addUserProject(db, beni.getId(), ferring.getId());
+    addUserProject(db, alberto.getId(), destapp.getId());
+    addUserProject(db, santi.getId(), vips.getId());
+    addUserProject(db, alex.getId(), forme.getId());
   }
 
-  private static Date getTodayPlusDays(int daysAgo) {
+  private static Date getTodayPlusDays (int daysAgo) {
     Calendar calendar = Calendar.getInstance();
     calendar.add(Calendar.DATE, daysAgo);
     return calendar.getTime();

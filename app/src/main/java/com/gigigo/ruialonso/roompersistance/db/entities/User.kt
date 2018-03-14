@@ -4,11 +4,13 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 
 @Entity(tableName = "User")
-class UserEntity {
-  @PrimaryKey
-  var id: Int = 0
+class User(
+    @PrimaryKey
+    var id: Int,
 
-  var name: String? = null
+    var name: String?,
 
-  var email: String? = null
+    var email: String?
+) {
+  constructor() : this(0, null, null)
 }

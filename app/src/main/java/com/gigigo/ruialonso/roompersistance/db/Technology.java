@@ -1,4 +1,4 @@
-package com.gigigo.ruialonso.roompersistance.models;
+package com.gigigo.ruialonso.roompersistance.db;
 
 public enum Technology {
   Android,

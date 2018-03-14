@@ -9,16 +9,18 @@ import java.util.Date
 
 @Entity(tableName = "Repository")
 @TypeConverters(DateConverter::class)
-class RepositoryEntity {
-  @PrimaryKey(autoGenerate = true)
-  var id: Int = 0
+class Repository(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int,
 
-  var name: String? = null
+    var name: String?,
 
-  var url: String? = null
+    var url: String?,
 
-  @ColumnInfo(name = "user_id")
-  var userId: Int = 0
+    @ColumnInfo(name = "user_id")
+    var userId: Int,
 
-  var creationDate: Date? = null
+    var creationDate: Date?
+) {
+  constructor() : this(0, null, null, 0, null)
 }
